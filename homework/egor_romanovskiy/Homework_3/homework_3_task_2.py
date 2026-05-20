@@ -1,5 +1,3 @@
-a = 3
-b = 4
-print("a + b =", a + b)
-print("a - b =", a - b)
-print("a * b =", a * b)
+x = 3
+y = 4
+print("x − y / 5 + xy =", x - y / 5 + x * y)

@@ -1,20 +1,17 @@
 import sys
 
 
-def generate_fibonachi_row(limit=10):
+def generate_fibonachi_row():
     num_1 = 0
     num_2 = 1
-    count = 0
-    while count < limit:
+    while True:
         yield num_1
-        num_2 += num_1
-        num_1 = num_2 - num_1
-        count += 1
+        num_1, num_2 = num_2, num_1 + num_2
 
 
 def get_number_by_position_from_fibonachi(position):
     count = 1
-    for number in generate_fibonachi_row(position):
+    for number in generate_fibonachi_row():
         if count == position:
             print(number)
             break

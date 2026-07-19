@@ -5,29 +5,50 @@
 -- Создайте по два занятия для каждого предмета (lessons)
 -- Поставьте своему студенту оценки (marks) для всех созданных вами занятий
 
-INSERT INTO students (id, name, second_name, group_id) VALUES (23016, 'First', 'Last', 1);
-INSERT INTO books (id, title, taken_by_student_id) VALUES (6099, 'Title1', 23016), (6100, 'Title2', 23016);
-INSERT INTO `groups` (id, title, start_date, end_date) VALUES (22830, 'GroupTitle1', 'start', 'end');
+INSERT INTO students (name, second_name, group_id) VALUES ('Firstname', 'Lastname', NULL);
+
+SELECT id FROM students s
+WHERE name = 'Firstname' AND second_name = 'Lastname' ORDER BY id DESC LIMIT 1
+
+INSERT INTO books (title, taken_by_student_id)
+VALUES('my_book_1', 23017),
+('my_book_2', 23017);
+
+INSERT INTO `groups` (title, start_date, end_date)
+VALUES ('Group101', '2024-09-01', '2025-06-30');
+
+SELECT id FROM `groups` WHERE title = 'Group101' ORDER BY id DESC LIMIT 1
 
 UPDATE students
-SET group_id = 22830
-WHERE id = 23016;
+SET group_id = 22831
+WHERE id = 23017
 
-INSERT INTO subjects (id, title) VALUES (23031, 'Subject1'), (23032, 'Subject2');
+INSERT INTO subjects (title) VALUES ('Subject3'), ('Subject4');
+
+SELECT *
+FROM subjects
+WHERE title IN ('Subject3', 'Subject4')
+ORDER BY id DESC
+LIMIT 2
 
 INSERT INTO lessons
-(id, title, subject_id)
-VALUES (76374, 'lesson1', 23031),
-(76375, 'lesson2', 23031),
-(76376, 'lesson3', 23032),
-(76377, 'lesson4', 23032);
+(title, subject_id)
+VALUES ('lesson5', 23033),
+('lesson6', 23033),
+('lesson7', 23034),
+('lesson8', 23034);
 
-INSERT INTO marks
-(id, value, lesson_id, student_id)
-VALUES (76320, '10', 76374, 23016),
-(76321, '9', 76375, 23016),
-(76322, '8', 76376, 23016),
-(76323, '7', 76377, 23016);
+SELECT *
+FROM lessons l
+WHERE subject_id IN (23033,23034)
+ORDER BY 1 DESC
+LIMIT 4
+
+INSERT INTO marks (value, lesson_id, student_id)
+VALUES (5, 76378, 23017),
+(4, 76379, 23017),
+(3, 76380, 23017),
+(5, 76381, 23017);
 
 -- Получите информацию из базы данных:
 -- Все оценки студента
@@ -37,11 +58,11 @@ VALUES (76320, '10', 76374, 23016),
 
 SELECT *
 FROM marks m
-WHERE m.student_id = 23016;
+WHERE m.student_id = 23017;
 
 SELECT *
 FROM books b
-WHERE b.taken_by_student_id = 23016;
+WHERE b.taken_by_student_id = 23017;
 
 SELECT g.title AS 'group',
 	b.title AS 'book',
@@ -59,4 +80,4 @@ FROM students s
 		ON l.id = m.lesson_id
 	JOIN subjects subj
 		ON subj.id = l.subject_id
-WHERE s.id = 23016;
+WHERE s.id = 23017;

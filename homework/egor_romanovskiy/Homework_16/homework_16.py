@@ -43,8 +43,10 @@ WHERE s.name = %s
     AND subj.title = %s
 '''
 
-with open('C:/Users/egor.romanovskiy/JOB/Automation/okulik/yvr/homework/eugene_okulik/Lesson_16/hw_data/data.csv', 'r'
-          ) as file:
+folder_path = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+file_path = os.path.join(folder_path, 'eugene_okulik', 'Lesson_16', 'hw_data', 'data.csv')
+
+with open(file_path, 'r') as file:
     for line in csv.DictReader(file):
         values = (line['name'], line['second_name'], line['group_title'], line['book_title'], line['mark_value'],
                   line['lesson_title'], line['subject_title'])

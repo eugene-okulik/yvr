@@ -1,5 +1,6 @@
 import requests
 import pytest
+import allure
 
 
 @pytest.fixture()
@@ -30,13 +31,20 @@ def check_object_by_id(object_id):
     return response.status_code
 
 
+@allure.feature('GET methods')
+@allure.story('Get all objects')
 @pytest.mark.medium
 def test_get_all_objects(start_end_session):
-    response = requests.get(url='http://objapi.course.qa-practice.com/object')
-    assert response.status_code == 200, f'Expected status code 200 but was {response.status_code}'
-    assert len(response.json()['data']) > 0, 'No objects returned in response'
+    with allure.step('Run request to get all objects'):
+        response = requests.get(url='http://objapi.course.qa-practice.com/object')
+    with allure.step('Check response code is 200'):
+        assert response.status_code == 200, f'Expected status code 200 but was {response.status_code}'
+    with allure.step('Check response contains objects'):
+        assert len(response.json()['data']) > 0, 'No objects returned in response'
 
 
+@allure.feature('GET methods')
+@allure.story('Get object by ID')
 @pytest.mark.critical
 def test_get_object(new_object_id):
     response = requests.get(url=f'http://objapi.course.qa-practice.com/object/{new_object_id}')
@@ -46,6 +54,8 @@ def test_get_object(new_object_id):
         f"Expected id = {new_object_id} in response but was {response_json['id']}"
 
 
+@allure.feature('POST methods')
+@allure.story('Create object')
 @pytest.mark.parametrize(
     'name, color, size',
     [
@@ -65,6 +75,8 @@ def test_create_object(name, color, size):
     requests.delete(url=f"http://objapi.course.qa-practice.com/object/{response_json['id']}")
 
 
+@allure.feature('PUT methods')
+@allure.story('Update object')
 def test_put_object(new_object_id):
     body = {'data': {'color': 'red', 'size': 'big'}, 'id': new_object_id, 'name': 'third'}
     response = requests.put(url=f'http://objapi.course.qa-practice.com/object/{new_object_id}', json=body)
@@ -75,6 +87,8 @@ def test_put_object(new_object_id):
     assert response_json['data']['size'] == 'big', f"Expected size 'big' but was {response_json['data']['size']}"
 
 
+@allure.feature('PATCH methods')
+@allure.story('Change object')
 def test_patch_object(new_object_id):
     body = {'data': {'color': 'color_patched'}, 'name': 'name_patched'}
     response = requests.patch(url=f'http://objapi.course.qa-practice.com/object/{new_object_id}', json=body)
@@ -85,6 +99,8 @@ def test_patch_object(new_object_id):
         f"Expected 'color_patched' but was {response_json['data']['color']}"
 
 
+@allure.feature('DELETE methods')
+@allure.story('Delete object')
 def test_delete_object(new_object_id):
     response = requests.delete(url=f'http://objapi.course.qa-practice.com/object/{new_object_id}')
     assert response.status_code == 200, f'Expected status code 200 but was {response.status_code}'
